@@ -18,6 +18,13 @@ defmodule TrmnlWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/devices", DeviceLive.Index, :index
+    live "/devices/new", DeviceLive.Index, :new
+    live "/devices/:id/edit", DeviceLive.Index, :edit
+
+    live "/devices/:id", DeviceLive.Show, :show
+    live "/devices/:id/show/edit", DeviceLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

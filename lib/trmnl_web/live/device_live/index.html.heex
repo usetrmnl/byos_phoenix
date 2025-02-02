@@ -1,0 +1,50 @@
+<.header>
+  Listing Devices
+  <:actions>
+    <.link patch={~p"/devices/new"}>
+      <.button>New Device</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="devices"
+  rows={@streams.devices}
+  row_click={fn {_id, device} -> JS.navigate(~p"/devices/#{device}") end}
+>
+  <:col :let={{_id, device}} label="Name">{device.name}</:col>
+  <:col :let={{_id, device}} label="MAC address">{device.mac_address}</:col>
+  <:col :let={{_id, device}} label="API key">{device.api_key}</:col>
+  <:col :let={{_id, device}} label="Friendly ID">{device.friendly_id}</:col>
+  <:col :let={{_id, device}} label="Refresh interval">{device.refresh_interval}</:col>
+  <:action :let={{_id, device}}>
+    <div class="sr-only">
+      <.link navigate={~p"/devices/#{device}"}>Show</.link>
+    </div>
+    <.link patch={~p"/devices/#{device}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, device}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: device.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="device-modal"
+  show
+  on_cancel={JS.patch(~p"/devices")}
+>
+  <.live_component
+    module={TrmnlWeb.DeviceLive.FormComponent}
+    id={@device.id || :new}
+    title={@page_title}
+    action={@live_action}
+    device={@device}
+    patch={~p"/devices"}
+  />
+</.modal>
