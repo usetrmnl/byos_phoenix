@@ -28,7 +28,11 @@ defmodule TrmnlWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", TrmnlWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", TrmnlWeb do
+    pipe_through :api
+
+    get "/setup", APIController, :setup
+    get "/display", APIController, :display
+    post "/log", APIController, :log
+  end
 end

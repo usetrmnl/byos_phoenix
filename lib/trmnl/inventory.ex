@@ -37,6 +37,10 @@ defmodule Trmnl.Inventory do
   """
   def get_device!(id), do: Repo.get!(Device, id)
 
+  def get_device_by_mac_address(mac_address) do
+    Repo.get_by(Device, mac_address: mac_address)
+  end
+
   @doc """
   Creates a device.
 
