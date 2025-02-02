@@ -9,6 +9,7 @@ defmodule TrmnlWeb.APIController do
   def display(conn, _params) do
     with [api_key | _] <- get_req_header(conn, "access-token"),
          device = %Inventory.Device{} <- Inventory.get_device_by_api_key(api_key) do
+      Inventory.ping(device)
       json(conn, display_ok(device))
     else
       _ -> json(conn, display_error())
@@ -19,6 +20,7 @@ defmodule TrmnlWeb.APIController do
   def setup(conn, _params) do
     with [mac_address | _] <- get_req_header(conn, "id"),
          device = %Inventory.Device{} <- Inventory.get_device_by_mac_address(mac_address) do
+      Inventory.ping(device)
       json(conn, setup_ok(device))
     else
       _ -> json(conn, setup_error())

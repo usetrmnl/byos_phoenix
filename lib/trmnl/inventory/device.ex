@@ -9,6 +9,8 @@ defmodule Trmnl.Inventory.Device do
     field :friendly_id, :string
     field :refresh_interval, :integer, default: 900
     field :latest_screen, :string
+    field :screen_generated_at, :utc_datetime
+    field :alive_at, :utc_datetime
 
     timestamps(type: :utc_datetime)
   end
@@ -22,7 +24,9 @@ defmodule Trmnl.Inventory.Device do
       :api_key,
       :friendly_id,
       :refresh_interval,
-      :latest_screen
+      :latest_screen,
+      :screen_generated_at,
+      :alive_at
     ])
     |> upcase([:friendly_id, :mac_address])
     |> validate_required([:name, :mac_address, :api_key, :friendly_id, :refresh_interval])

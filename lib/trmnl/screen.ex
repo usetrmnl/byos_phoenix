@@ -36,7 +36,10 @@ defmodule Trmnl.Screen do
     {:ok, filename} = render_bmp(screen, device, assigns)
 
     # --- Update the device ---
-    Inventory.update_device(device, %{latest_screen: filename})
+    Inventory.update_device(device, %{
+      latest_screen: filename,
+      screen_generated_at: DateTime.utc_now()
+    })
   end
 
   defp render_bmp(screen, device, assigns) do

@@ -9,6 +9,8 @@ defmodule Trmnl.Repo.Migrations.CreateDevices do
       add :friendly_id, :string, null: false
       add :refresh_interval, :integer, null: false, default: 900
       add :latest_screen, :string
+      add :screen_generated_at, :utc_datetime
+      add :alive_at, :utc_datetime
 
       timestamps(type: :utc_datetime)
     end

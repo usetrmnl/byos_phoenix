@@ -13,10 +13,9 @@
   row_click={fn {_id, device} -> JS.navigate(~p"/devices/#{device}") end}
 >
   <:col :let={{_id, device}} label="Name">{device.name}</:col>
-  <:col :let={{_id, device}} label="MAC address">{device.mac_address}</:col>
-  <:col :let={{_id, device}} label="API key">{device.api_key}</:col>
   <:col :let={{_id, device}} label="Friendly ID">{device.friendly_id}</:col>
-  <:col :let={{_id, device}} label="Refresh interval">{device.refresh_interval}</:col>
+  <:col :let={{_id, device}} label="Alive at">{device.alive_at || "Never"}</:col>
+
   <:action :let={{_id, device}}>
     <div class="sr-only">
       <.link navigate={~p"/devices/#{device}"}>Show</.link>

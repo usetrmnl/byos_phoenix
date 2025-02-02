@@ -118,6 +118,12 @@ defmodule Trmnl.Inventory do
     Device.changeset(device, attrs)
   end
 
+  def ping(device) do
+    device
+    |> Device.changeset(%{alive_at: DateTime.utc_now()})
+    |> Repo.update()
+  end
+
   def default_attrs do
     %{api_key: random_api_key(), friendly_id: random_friendly_id()}
   end

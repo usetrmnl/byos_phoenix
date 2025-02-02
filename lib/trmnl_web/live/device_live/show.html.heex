@@ -14,6 +14,7 @@
   <:item title="MAC address">{@device.mac_address}</:item>
   <:item title="API key">{@device.api_key}</:item>
   <:item title="Friendly ID">{@device.friendly_id}</:item>
+  <:item title="Alive at">{@device.alive_at || "Never"}</:item>
   <:item title="Refresh interval">{@device.refresh_interval}</:item>
 </.list>
 
@@ -23,6 +24,7 @@
       src={~p"/generated/#{@device.latest_screen}"}
       class="mt-8 border-2 border-black rounded-xl"
     />
+    <div class="text-sm mt-2 text-gray-500">Generated {@device.screen_generated_at}</div>
   </.link>
 <% else %>
   <p>No screen generated yet</p>
