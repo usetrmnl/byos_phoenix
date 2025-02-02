@@ -6,7 +6,32 @@ defmodule TrmnlWeb.APIController do
   alias Trmnl.Inventory
 
   def display(conn, _params) do
-    # todo
+    with [api_key | _] <- get_req_header(conn, "access-token"),
+         device = %Inventory.Device{} <- Inventory.get_device_by_api_key(api_key) do
+      filename = "screen_#{device.id}.bmp"
+
+      payload = %{
+        status: 0,
+        image_url: url(~p"/generated/#{filename}"),
+        filename: filename,
+        refresh_rate: device.refresh_interval,
+        reset_firmware: false,
+        update_firmware: false,
+        firmware_url: nil,
+        special_function: "sleep"
+      }
+
+      send_resp(conn, 200, Jason.encode!(payload))
+    else
+      _ ->
+        payload = %{
+          status: 500,
+          error: "Device not found",
+          reset_firmware: true
+        }
+
+        send_resp(conn, 200, Jason.encode!(payload))
+    end
   end
 
   def setup(conn, _params) do

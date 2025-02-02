@@ -11,8 +11,7 @@ defmodule Trmnl.Application do
       TrmnlWeb.Telemetry,
       Trmnl.Repo,
       {Ecto.Migrator,
-        repos: Application.fetch_env!(:trmnl, :ecto_repos),
-        skip: skip_migrations?()},
+       repos: Application.fetch_env!(:trmnl, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:trmnl, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Trmnl.PubSub},
       # Start a worker by calling: Trmnl.Worker.start_link(arg)
@@ -24,7 +23,11 @@ defmodule Trmnl.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Trmnl.Supervisor]
-    Supervisor.start_link(children, opts)
+
+    with {:ok, sup} <- Supervisor.start_link(children, opts) do
+      Application.put_env(:wallaby, :base_url, TrmnlWeb.Endpoint.url())
+      {:ok, sup}
+    end
   end
 
   # Tell Phoenix to update the endpoint configuration

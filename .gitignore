@@ -27,6 +27,11 @@ trmnl-*.tar
 
 # Ignore assets that are produced by build tools.
 /priv/static/assets/
+/priv/static/screens/
+/priv/static/generated/
+
+# Wallaby screenshots
+/screenshots/
 
 # Ignore digested assets cache.
 /priv/static/cache_manifest.json
@@ -39,3 +44,4 @@ npm-debug.log
 *.db
 *.db-*
 
+.DS_Store
