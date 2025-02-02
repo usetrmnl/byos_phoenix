@@ -2,6 +2,7 @@
   Device {@device.id}
   <:subtitle>This is a device record from your database.</:subtitle>
   <:actions>
+    <.button phx-click="regenerate">Regenerate screen</.button>
     <.link patch={~p"/devices/#{@device}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit device</.button>
     </.link>
@@ -15,6 +16,17 @@
   <:item title="Friendly ID">{@device.friendly_id}</:item>
   <:item title="Refresh interval">{@device.refresh_interval}</:item>
 </.list>
+
+<%= if @device.latest_screen do %>
+  <.link href={~p"/generated/#{@device.latest_screen}"}>
+    <img
+      src={~p"/generated/#{@device.latest_screen}"}
+      class="mt-8 border-2 border-black rounded-xl"
+    />
+  </.link>
+<% else %>
+  <p>No screen generated yet</p>
+<% end %>
 
 <.back navigate={~p"/devices"}>Back to devices</.back>
 

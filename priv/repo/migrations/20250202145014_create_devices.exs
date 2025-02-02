@@ -8,6 +8,7 @@ defmodule Trmnl.Repo.Migrations.CreateDevices do
       add :api_key, :string, null: false
       add :friendly_id, :string, null: false
       add :refresh_interval, :integer, null: false, default: 900
+      add :latest_screen, :string
 
       timestamps(type: :utc_datetime)
     end

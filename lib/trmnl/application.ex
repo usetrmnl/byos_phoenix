@@ -17,7 +17,9 @@ defmodule Trmnl.Application do
       # Start a worker by calling: Trmnl.Worker.start_link(arg)
       # {Trmnl.Worker, arg},
       # Start to serve requests, typically the last entry
-      TrmnlWeb.Endpoint
+      TrmnlWeb.Endpoint,
+      # Must start AFTER the endpoint
+      Trmnl.ScreenGenerator
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -8,12 +8,10 @@ defmodule TrmnlWeb.APIController do
   def display(conn, _params) do
     with [api_key | _] <- get_req_header(conn, "access-token"),
          device = %Inventory.Device{} <- Inventory.get_device_by_api_key(api_key) do
-      filename = "screen_#{device.id}.bmp"
-
       payload = %{
         status: 0,
-        image_url: url(~p"/generated/#{filename}"),
-        filename: filename,
+        image_url: url(~p"/generated/#{device.latest_screen}"),
+        filename: device.latest_screen,
         refresh_rate: device.refresh_interval,
         reset_firmware: false,
         update_firmware: false,

@@ -8,6 +8,7 @@ defmodule Trmnl.Inventory.Device do
     field :mac_address, :string
     field :friendly_id, :string
     field :refresh_interval, :integer, default: 900
+    field :latest_screen, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -15,7 +16,14 @@ defmodule Trmnl.Inventory.Device do
   @doc false
   def changeset(device, attrs) do
     device
-    |> cast(attrs, [:name, :mac_address, :api_key, :friendly_id, :refresh_interval])
+    |> cast(attrs, [
+      :name,
+      :mac_address,
+      :api_key,
+      :friendly_id,
+      :refresh_interval,
+      :latest_screen
+    ])
     |> upcase([:friendly_id, :mac_address])
     |> validate_required([:name, :mac_address, :api_key, :friendly_id, :refresh_interval])
     |> validate_mac_address()

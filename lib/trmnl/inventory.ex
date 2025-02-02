@@ -1,12 +1,12 @@
 defmodule Trmnl.Inventory do
   @moduledoc """
-  The Inventory context.
+  Manages devices.
   """
 
   import Ecto.Query, warn: false
-  alias Trmnl.Repo
 
   alias Trmnl.Inventory.Device
+  alias Trmnl.Repo
 
   @doc """
   Returns the list of devices.
@@ -57,10 +57,18 @@ defmodule Trmnl.Inventory do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_device(attrs \\ %{}) do
+  def create_device(attrs \\ default_attrs()) do
     %Device{}
     |> Device.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, device} ->
+        Trmnl.ScreenGenerator.regenerate_asap(device)
+        {:ok, device}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
   end
 
   @doc """
@@ -106,11 +114,19 @@ defmodule Trmnl.Inventory do
       %Ecto.Changeset{data: %Device{}}
 
   """
-  def change_device(%Device{} = device, attrs \\ %{api_key: random_api_key()}) do
+  def change_device(%Device{} = device, attrs \\ default_attrs()) do
     Device.changeset(device, attrs)
+  end
+
+  def default_attrs do
+    %{api_key: random_api_key(), friendly_id: random_friendly_id()}
   end
 
   def random_api_key do
     :crypto.strong_rand_bytes(12) |> Base.url_encode64()
+  end
+
+  def random_friendly_id do
+    :crypto.strong_rand_bytes(3) |> Base.encode32(padding: false)
   end
 end

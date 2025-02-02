@@ -1,4 +1,15 @@
 defmodule Trmnl.Screen do
+  @moduledoc """
+  Renders device screens and updates the device with the latest screen.
+
+  It is also the behaviour that modules must implement to be used as screens.
+  """
+
+  @callback render(assigns :: map) :: Phoenix.LiveView.Rendered.t()
+
+  require Logger
+  alias Trmnl.Inventory
+
   @width 800
   @height 480
   @color_depth 1
@@ -6,7 +17,29 @@ defmodule Trmnl.Screen do
   # Determined experimentally... might change in the future!
   @chrome_extra_height 139
 
-  def generate(device, heex_fun, assigns) do
+  def playlist(_device) do
+    # The device argument could be used to customize the playlist
+    [
+      Trmnl.Screens.Hello
+    ]
+  end
+
+  # This function is slooooow because it calls out to the browser, so try to call it async whenever possible
+  def regenerate(device, playlist_index \\ Trmnl.ScreenGenerator.counter()) do
+    # --- Determine the current screen module ---
+    playlist = playlist(device)
+    screen = Enum.at(playlist, rem(playlist_index, length(playlist)))
+
+    # --- Render the screen ---
+    Logger.debug("Generating #{screen} for device #{device.id}...")
+    assigns = %{device: device}
+    {:ok, filename} = render_bmp(screen, device, assigns)
+
+    # --- Update the device ---
+    Inventory.update_device(device, %{latest_screen: filename})
+  end
+
+  defp render_bmp(screen, device, assigns) do
     # --- Generate paths ---
     timestamp = DateTime.utc_now() |> DateTime.to_unix()
     basename = "screen_#{device.id}_#{timestamp}"
@@ -23,7 +56,7 @@ defmodule Trmnl.Screen do
 
     # --- Render the screen within the layout ---
     rendered =
-      %{inner_content: heex_fun.(assigns)}
+      %{inner_content: screen.render(assigns)}
       |> TrmnlWeb.Layouts.screen()
       |> Phoenix.HTML.Safe.to_iodata()
       |> IO.iodata_to_binary()
@@ -65,6 +98,6 @@ defmodule Trmnl.Screen do
     File.rm!(temp_html_path)
     File.rm!(screenshot_path)
 
-    {:ok, "/generated/#{basename}.bmp"}
+    {:ok, "#{basename}.bmp"}
   end
 end

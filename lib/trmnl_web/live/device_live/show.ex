@@ -2,6 +2,7 @@ defmodule TrmnlWeb.DeviceLive.Show do
   use TrmnlWeb, :live_view
 
   alias Trmnl.Inventory
+  alias Trmnl.Screen
 
   @impl true
   def mount(_params, _session, socket) do
@@ -14,6 +15,12 @@ defmodule TrmnlWeb.DeviceLive.Show do
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:device, Inventory.get_device!(id))}
+  end
+
+  @impl true
+  def handle_event("regenerate", _, socket) do
+    {:ok, device} = Screen.regenerate(socket.assigns.device)
+    {:noreply, assign(socket, :device, device)}
   end
 
   defp page_title(:show), do: "Show Device"
