@@ -45,5 +45,13 @@ defmodule TrmnlWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+
+  # Allow CORS requests from any origin (you should probably lock this down or remove it)
+  plug Corsica,
+    origins: "*",
+    allow_credentials: true,
+    max_age: 600,
+    allow_headers: ["access-token", "id"]
+
   plug TrmnlWeb.Router
 end
