@@ -23,41 +23,31 @@ defmodule Trmnl.ScreenGenerator do
     GenServer.cast(__MODULE__, {:regenerate, device})
   end
 
-  def counter() do
-    GenServer.call(__MODULE__, :counter)
-  end
-
   # --- GenServer callbacks ---
 
   @impl true
   def init(_) do
-    send(self(), :regenerate_all)
-    {:ok, %{counter: 0}}
+    send(self(), :advance_playlists)
+    {:ok, %{}}
   end
 
   @impl true
   def handle_cast({:regenerate, device}, state) do
-    Screen.regenerate(device, state.counter)
+    Screen.regenerate(device)
     {:noreply, state}
   end
 
   @impl true
-  def handle_call(:counter, _from, state) do
-    {:reply, state.counter, state}
-  end
-
-  @impl true
-  def handle_info(:regenerate_all, state) do
+  def handle_info(:advance_playlists, state) do
     Logger.debug("Regenerating all screens...")
-    Process.send_after(self(), :regenerate_all, @regenerate_interval)
+    Process.send_after(self(), :advance_playlists, @regenerate_interval)
 
     # Could also spawn these Tasks in a TaskSupervisor to run fully async
     Inventory.list_devices()
-    |> Task.async_stream(&Screen.regenerate(&1, state.counter))
+    |> Task.async_stream(&Screen.regenerate(&1, advance: true))
     |> Stream.run()
 
     Logger.debug("All screens regenerated.")
-    counter = state.counter + 1
-    {:noreply, %{state | counter: counter}}
+    {:noreply, state}
   end
 end

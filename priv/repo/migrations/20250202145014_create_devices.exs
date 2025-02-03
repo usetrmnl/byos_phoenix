@@ -11,6 +11,7 @@ defmodule Trmnl.Repo.Migrations.CreateDevices do
       add :latest_screen, :string
       add :screen_generated_at, :utc_datetime
       add :alive_at, :utc_datetime
+      add :playlist_index, :integer, default: 0, null: false
 
       timestamps(type: :utc_datetime)
     end

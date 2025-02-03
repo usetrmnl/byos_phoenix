@@ -25,10 +25,12 @@ defmodule Trmnl.Screen do
   end
 
   # This function is slooooow because it calls out to the browser, so try to call it async whenever possible
-  def regenerate(device, playlist_index \\ Trmnl.ScreenGenerator.counter()) do
+  def regenerate(device, opts \\ []) do
     # --- Determine the current screen module ---
     playlist = playlist(device)
-    screen = Enum.at(playlist, rem(playlist_index, length(playlist)))
+    playlist_index = if opts[:advance], do: device.playlist_index + 1, else: device.playlist_index
+    playlist_index = rem(playlist_index, length(playlist))
+    screen = Enum.at(playlist, playlist_index)
 
     # --- Render the screen ---
     Logger.debug("Generating #{screen} for device #{device.id}...")
@@ -38,7 +40,8 @@ defmodule Trmnl.Screen do
     # --- Update the device ---
     Inventory.update_device(device, %{
       latest_screen: filename,
-      screen_generated_at: DateTime.utc_now()
+      screen_generated_at: DateTime.utc_now(),
+      playlist_index: playlist_index
     })
   end
 
