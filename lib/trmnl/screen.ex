@@ -97,6 +97,7 @@ defmodule Trmnl.Screen do
       "-depth",
       "#{@color_depth}",
       "-strip",
+      "-monochrome",
       "bmp3:#{generated_path}"
     ])
 
