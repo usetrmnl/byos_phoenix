@@ -11,6 +11,7 @@ defmodule Trmnl.ScreenGenerator do
   alias Trmnl.Screen
   alias Trmnl.Inventory
 
+  # 15 minutes
   @regenerate_interval 900_000
 
   # --- Public API ---
@@ -19,6 +20,9 @@ defmodule Trmnl.ScreenGenerator do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
+  @doc """
+  Regenerates the screen for the given device as soon as possible.
+  """
   def regenerate_asap(device) do
     GenServer.cast(__MODULE__, {:regenerate, device})
   end

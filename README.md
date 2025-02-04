@@ -29,3 +29,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 - `lib/trmnl/screen_generator.ex` - a GenServer that regenerates screens every 15 minutes
 - `lib/trmnl/screens/hello.ex` - a basic example screen
 - `lib/trmnl_web/controllers/api_controller.ex` - the API controller where devices phone home
+
+## Looking for another language?
+
+- [usetrmnl/byos_sinatra](https://github.com/usetrmnl/byos_sinatra) (Ruby)

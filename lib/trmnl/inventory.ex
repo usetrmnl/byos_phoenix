@@ -37,10 +37,20 @@ defmodule Trmnl.Inventory do
   """
   def get_device!(id), do: Repo.get!(Device, id)
 
+  @doc """
+  Gets a single device by its MAC address.
+
+  Returns nil if the device is not found.
+  """
   def get_device_by_mac_address(mac_address) do
     Repo.get_by(Device, mac_address: mac_address)
   end
 
+  @doc """
+  Gets a single device by its API key.
+
+  Returns nil if the device is not found.
+  """
   def get_device_by_api_key(api_key) do
     Repo.get_by(Device, api_key: api_key)
   end
@@ -118,21 +128,24 @@ defmodule Trmnl.Inventory do
     Device.changeset(device, attrs)
   end
 
+  @doc """
+  Marks a device as alive after it hits the API controller.
+  """
   def ping(device) do
     device
     |> Device.changeset(%{alive_at: DateTime.utc_now()})
     |> Repo.update()
   end
 
-  def default_attrs do
+  defp default_attrs do
     %{api_key: random_api_key(), friendly_id: random_friendly_id()}
   end
 
-  def random_api_key do
+  defp random_api_key do
     :crypto.strong_rand_bytes(12) |> Base.url_encode64()
   end
 
-  def random_friendly_id do
+  defp random_friendly_id do
     :crypto.strong_rand_bytes(3) |> Base.encode32(padding: false)
   end
 end

@@ -1,6 +1,6 @@
 defmodule Trmnl.Screen do
   @moduledoc """
-  Renders device screens and updates the device with the latest screen.
+  Renders device screens.
 
   It is also the behaviour that modules must implement to be used as screens.
   """
@@ -17,6 +17,11 @@ defmodule Trmnl.Screen do
   # Determined experimentally... might change in the future!
   @chrome_extra_height 139
 
+  @doc """
+  Returns the playlist of screens to be displayed on the device.
+
+  The result is a list of modules that implement the `Trmnl.Screen` behaviour.
+  """
   def playlist(_device) do
     # The device argument could be used to customize the playlist
     [
@@ -24,7 +29,22 @@ defmodule Trmnl.Screen do
     ]
   end
 
-  # This function is slooooow because it calls out to the browser, so try to call it async whenever possible
+  defp build_assigns(device) do
+    # Customize this function to pass additional assigns to the screen
+    %{
+      device: device
+    }
+  end
+
+  @doc """
+  Regenerates the screen for the given device.
+
+  This function is very slow because it calls out to the browser, so try to call it async whenever possible.
+
+  ## Options
+
+  - `:advance` - If `true`, advances the playlist before rendering.
+  """
   def regenerate(device, opts \\ []) do
     # --- Determine the current screen module ---
     playlist = playlist(device)
@@ -35,7 +55,7 @@ defmodule Trmnl.Screen do
     # --- Render the screen ---
     Logger.debug("Generating #{screen} for device #{device.id}...")
     assigns = %{device: device}
-    {:ok, filename} = render_bmp(screen, device, assigns)
+    {:ok, filename} = render_bmp(device, screen, build_assigns(assigns))
 
     # --- Update the device ---
     Inventory.update_device(device, %{
@@ -45,7 +65,7 @@ defmodule Trmnl.Screen do
     })
   end
 
-  defp render_bmp(screen, device, assigns) do
+  defp render_bmp(device, screen, assigns) do
     # --- Generate paths ---
     timestamp = DateTime.utc_now() |> DateTime.to_unix()
     basename = "screen_#{device.id}_#{timestamp}"
