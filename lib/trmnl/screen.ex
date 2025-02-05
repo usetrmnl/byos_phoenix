@@ -25,7 +25,7 @@ defmodule Trmnl.Screen do
   def playlist(_device) do
     # The device argument could be used to customize the playlist
     [
-      Trmnl.Screens.Hello
+      Trmnl.Screens.HelloWorld
     ]
   end
 

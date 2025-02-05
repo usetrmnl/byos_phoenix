@@ -23,12 +23,14 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-## Interesting files to check out
+## Modules to check out
 
-- `lib/trmnl/screen.ex` - the core logic for rendering and updating screen BMPs
-- `lib/trmnl/screen_generator.ex` - a GenServer that regenerates screens every 15 minutes
-- `lib/trmnl/screens/hello.ex` - a basic example screen
-- `lib/trmnl_web/controllers/api_controller.ex` - the API controller where devices phone home
+- [Trmnl.Inventory.Device](lib/trmnl/inventory/device.ex) - Ecto schema
+- [Trmnl.Inventory](lib/trmnl/inventory.ex) - device management
+- [Trmnl.Screen](lib/trmnl/screen.ex) - screen rendering
+- [Trmnl.ScreenGenerator](lib/trmnl/screen_generator.ex) - GenServer for periodically re-rendering screens
+- [Trmnl.Screens.HelloWorld](lib/trmnl/screens/hello_world.ex) - a basic example screen
+- [TrmnlWeb.APIController](lib/trmnl_web/controllers/api_controller.ex) - the device endpoint
 
 ## Looking for another language?
 

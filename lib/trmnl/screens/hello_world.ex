@@ -1,4 +1,4 @@
-defmodule Trmnl.Screens.Hello do
+defmodule Trmnl.Screens.HelloWorld do
   @moduledoc """
   A simple screen that says hello.
   """
