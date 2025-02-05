@@ -48,7 +48,11 @@ defmodule Trmnl.ScreenGenerator do
 
     # Could also spawn these Tasks in a TaskSupervisor to run fully async
     Inventory.list_devices()
-    |> Task.async_stream(&Screen.regenerate(&1, advance: true))
+    |> Task.async_stream(fn device ->
+      device
+      |> Screen.advance_playlist()
+      |> Screen.regenerate()
+    end)
     |> Stream.run()
 
     Logger.debug("All screens regenerated.")

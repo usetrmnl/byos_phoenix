@@ -19,6 +19,8 @@ defmodule TrmnlWeb.Router do
 
     get "/", PageController, :home
 
+    get "/screens/:api_key", ScreenController, :show
+
     live "/devices", DeviceLive.Index, :index
     live "/devices/new", DeviceLive.Index, :new
     live "/devices/:id/edit", DeviceLive.Index, :edit

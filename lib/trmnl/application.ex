@@ -26,10 +26,7 @@ defmodule Trmnl.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Trmnl.Supervisor]
 
-    with {:ok, sup} <- Supervisor.start_link(children, opts) do
-      Application.put_env(:wallaby, :base_url, TrmnlWeb.Endpoint.url())
-      {:ok, sup}
-    end
+    Supervisor.start_link(children, opts)
   end
 
   # Tell Phoenix to update the endpoint configuration

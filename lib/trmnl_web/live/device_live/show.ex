@@ -14,13 +14,14 @@ defmodule TrmnlWeb.DeviceLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:device, Inventory.get_device!(id))}
+     |> assign(:device, Inventory.get_device!(id))
+     |> assign(:screen_at, DateTime.to_unix(DateTime.utc_now()))}
   end
 
   @impl true
   def handle_event("regenerate", _, socket) do
     {:ok, device} = Screen.regenerate(socket.assigns.device)
-    {:noreply, assign(socket, :device, device)}
+    {:noreply, assign(socket, device: device, screen_at: DateTime.to_unix(DateTime.utc_now()))}
   end
 
   defp page_title(:show), do: "Show Device"

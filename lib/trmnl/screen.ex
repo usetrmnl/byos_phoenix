@@ -14,9 +14,6 @@ defmodule Trmnl.Screen do
   @height 480
   @color_depth 1
 
-  # Determined experimentally... might change in the future!
-  @chrome_extra_height 139
-
   @doc """
   Returns the playlist of screens to be displayed on the device.
 
@@ -29,11 +26,26 @@ defmodule Trmnl.Screen do
     ]
   end
 
-  defp build_assigns(device) do
-    # Customize this function to pass additional assigns to the screen
-    %{
-      device: device
-    }
+  @doc """
+  Returns the current screen module for the given device.
+  """
+  def current_screen(device) do
+    # --- Determine the current screen module ---
+    playlist = playlist(device)
+    playlist_index = rem(device.playlist_index, length(playlist))
+    Enum.at(playlist, playlist_index)
+  end
+
+  @doc """
+  Advances the playlist for the given device.
+  """
+  def advance_playlist(device) do
+    {:ok, device} =
+      Inventory.update_device(device, %{
+        playlist_index: rem(device.playlist_index + 1, length(playlist(device)))
+      })
+
+    device
   end
 
   @doc """
@@ -45,65 +57,39 @@ defmodule Trmnl.Screen do
 
   - `:advance` - If `true`, advances the playlist before rendering.
   """
-  def regenerate(device, opts \\ []) do
-    # --- Determine the current screen module ---
-    playlist = playlist(device)
-    playlist_index = if opts[:advance], do: device.playlist_index + 1, else: device.playlist_index
-    playlist_index = rem(playlist_index, length(playlist))
-    screen = Enum.at(playlist, playlist_index)
-
+  def regenerate(device) do
     # --- Render the screen ---
-    Logger.debug("Generating #{screen} for device #{device.id}...")
-    assigns = %{device: device}
-    {:ok, filename} = render_bmp(device, screen, build_assigns(assigns))
+    Logger.debug("Generating screen for device #{device.id}...")
+    screen_path = render_current_bmp(device)
 
     # --- Update the device ---
     Inventory.update_device(device, %{
-      latest_screen: filename,
-      screen_generated_at: DateTime.utc_now(),
-      playlist_index: playlist_index
+      latest_screen: screen_path,
+      screen_generated_at: DateTime.utc_now()
     })
   end
 
-  defp render_bmp(device, screen, assigns) do
+  # Hits the /screens/:api_key endpoint to get the current screen, then converts it to a BMP
+  defp render_current_bmp(device) do
     # --- Generate paths ---
-    timestamp = DateTime.utc_now() |> DateTime.to_unix()
-    basename = "screen_#{device.id}_#{timestamp}"
-    glob = "screen_#{device.id}_*"
+    screenshot_path = "temp-#{device.id}.png"
+    basename = "d-#{device.id}"
+    static_dir = Path.join([:code.priv_dir(:trmnl), "static", "generated"])
+    static_path = Path.join([static_dir, "#{basename}.bmp"])
+    current_screen_url = "#{TrmnlWeb.Endpoint.url()}/screens/#{device.api_key}"
 
-    screenshot_path =
-      Path.join([:code.priv_dir(:trmnl), "..", "screenshots", "#{basename}.png"])
+    File.mkdir_p!(static_dir)
 
-    generated_path =
-      Path.join([:code.priv_dir(:trmnl), "static", "generated", "#{basename}.bmp"])
-
-    generated_glob_path =
-      Path.join([:code.priv_dir(:trmnl), "static", "generated", "#{glob}.bmp"])
-
-    # --- Render the screen within the layout ---
-    rendered =
-      %{inner_content: screen.render(assigns)}
-      |> TrmnlWeb.Layouts.screen()
-      |> Phoenix.HTML.Safe.to_iodata()
-      |> IO.iodata_to_binary()
-
-    temp_html_path =
-      Path.join([:code.priv_dir(:trmnl), "static", "screens", "#{basename}.html"])
-
-    File.write!(temp_html_path, rendered)
-
-    # --- Fire up Chrome and take a screenshot ---
-    {:ok, session} = Wallaby.start_session()
-
-    session
-    |> Wallaby.Browser.visit("/screens/#{basename}.html")
-    |> Wallaby.Browser.resize_window(@width, @height + @chrome_extra_height)
-    |> Wallaby.Browser.take_screenshot(name: basename)
-
-    # --- Remove old screenshots ---
-    generated_glob_path
-    |> Path.wildcard()
-    |> Enum.each(&File.rm!(&1))
+    # --- Generate screenshot ---
+    System.cmd("puppeteer-img", [
+      "--width",
+      to_string(@width),
+      "--height",
+      to_string(@height),
+      "--path",
+      screenshot_path,
+      current_screen_url
+    ])
 
     # --- Convert screenshot to BMP ---
     System.cmd("magick", [
@@ -118,13 +104,13 @@ defmodule Trmnl.Screen do
       "#{@color_depth}",
       "-strip",
       "-monochrome",
-      "bmp3:#{generated_path}"
+      "bmp3:#{static_path}"
     ])
 
     # --- Remove temporary files ---
-    File.rm!(temp_html_path)
     File.rm!(screenshot_path)
 
-    {:ok, "#{basename}.bmp"}
+    # --- Return the path to the generated BMP ---
+    "/generated/#{basename}.bmp"
   end
 end

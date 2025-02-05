@@ -36,10 +36,13 @@ defmodule TrmnlWeb.APIController do
   # --- JSON responses ---
 
   defp display_ok(device) do
+    # The device uses the filename to determine if the screen should be updated, so base the filename on the timestamp
+    filename = (device.screen_generated_at |> DateTime.to_unix() |> Integer.to_string()) <> ".bmp"
+
     %{
       status: 0,
-      image_url: url(~p"/generated/#{device.latest_screen}"),
-      filename: device.latest_screen,
+      image_url: TrmnlWeb.Endpoint.url() <> device.latest_screen,
+      filename: filename,
       refresh_rate: device.refresh_interval,
       reset_firmware: false,
       update_firmware: false,
