@@ -24,6 +24,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser to
 
 - [Trmnl.Inventory.Device](lib/trmnl/inventory/device.ex) - Ecto schema
 - [Trmnl.Inventory](lib/trmnl/inventory.ex) - device management
+- [Trmnl.Playlist](lib/trmnl/playlist.ex) - device playlist management
 - [Trmnl.Screen](lib/trmnl/screen.ex) - screen rendering
 - [Trmnl.ScreenGenerator](lib/trmnl/screen_generator.ex) - GenServer for periodically re-rendering screens
 - [Trmnl.Screens.HelloWorld](lib/trmnl/screens/hello_world.ex) - a basic example screen

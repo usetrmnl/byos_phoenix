@@ -8,8 +8,9 @@ defmodule Trmnl.ScreenGenerator do
 
   require Logger
 
-  alias Trmnl.Screen
   alias Trmnl.Inventory
+  alias Trmnl.Playlist
+  alias Trmnl.Screen
 
   # 15 minutes
   @regenerate_interval 900_000
@@ -50,7 +51,7 @@ defmodule Trmnl.ScreenGenerator do
     Inventory.list_devices()
     |> Task.async_stream(fn device ->
       device
-      |> Screen.advance_playlist()
+      |> Playlist.advance()
       |> Screen.regenerate()
     end)
     |> Stream.run()

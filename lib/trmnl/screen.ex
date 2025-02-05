@@ -15,40 +15,6 @@ defmodule Trmnl.Screen do
   @color_depth 1
 
   @doc """
-  Returns the playlist of screens to be displayed on the device.
-
-  The result is a list of modules that implement the `Trmnl.Screen` behaviour.
-  """
-  def playlist(_device) do
-    # The device argument could be used to customize the playlist
-    [
-      Trmnl.Screens.HelloWorld
-    ]
-  end
-
-  @doc """
-  Returns the current screen module for the given device.
-  """
-  def current_screen(device) do
-    # --- Determine the current screen module ---
-    playlist = playlist(device)
-    playlist_index = rem(device.playlist_index, length(playlist))
-    Enum.at(playlist, playlist_index)
-  end
-
-  @doc """
-  Advances the playlist for the given device.
-  """
-  def advance_playlist(device) do
-    {:ok, device} =
-      Inventory.update_device(device, %{
-        playlist_index: rem(device.playlist_index + 1, length(playlist(device)))
-      })
-
-    device
-  end
-
-  @doc """
   Regenerates the screen for the given device.
 
   This function is very slow because it calls out to the browser, so try to call it async whenever possible.
