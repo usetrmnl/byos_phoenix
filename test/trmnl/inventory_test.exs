@@ -29,6 +29,8 @@ defmodule Trmnl.InventoryTest do
       assert device.mac_address == "AA:BB:CC:DD:EE:FF"
       assert device.friendly_id == "SOME FRIENDLY_ID"
       assert device.refresh_interval == 42
+      assert device.pixel_width == 800
+      assert device.pixel_height == 480
     end
 
     test "create_device/1 with invalid data returns error changeset" do
@@ -37,7 +39,7 @@ defmodule Trmnl.InventoryTest do
 
     test "update_device/2 with valid data updates the device" do
       device = device_fixture()
-      update_attrs = %{name: "some updated name", api_key: "some updated api_key", mac_address: "FF:EE:DD:CC:BB:AA", friendly_id: "SOME UPDATED FRIENDLY_ID", refresh_interval: 43}
+      update_attrs = %{name: "some updated name", api_key: "some updated api_key", mac_address: "FF:EE:DD:CC:BB:AA", friendly_id: "SOME UPDATED FRIENDLY_ID", refresh_interval: 43, pixel_height: 1080, pixel_width: 1920}
 
       assert {:ok, %Device{} = device} = Inventory.update_device(device, update_attrs)
       assert device.name == "some updated name"
@@ -45,6 +47,8 @@ defmodule Trmnl.InventoryTest do
       assert device.mac_address == "FF:EE:DD:CC:BB:AA"
       assert device.friendly_id == "SOME UPDATED FRIENDLY_ID"
       assert device.refresh_interval == 43
+      assert device.pixel_height == 1080
+      assert device.pixel_width == 1920
     end
 
     test "update_device/2 with invalid data returns error changeset" do

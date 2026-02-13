@@ -67,8 +67,6 @@ defmodule TrmnlWeb.DeviceLiveTest do
 
       html = render(index_live)
       assert html =~ "Device created successfully"
-      assert html =~ "400"
-      assert html =~ "600"
       assert html =~ "some name"
     end
 
@@ -92,8 +90,6 @@ defmodule TrmnlWeb.DeviceLiveTest do
 
       html = render(index_live)
       assert html =~ "Device updated successfully"
-      assert html =~ "444"
-      assert html =~ "555"
       assert html =~ "some updated name"
     end
 
