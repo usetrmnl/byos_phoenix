@@ -14,6 +14,8 @@
 >
   <:col :let={{_id, device}} label="Name">{device.name}</:col>
   <:col :let={{_id, device}} label="Friendly ID">{device.friendly_id}</:col>
+  <:col :let={{_id, device}} label="Device height (px)">{device.pixel_height}</:col>
+  <:col :let={{_id, device}} label="Device width (px)">{device.pixel_height}</:col>
   <:col :let={{_id, device}} label="Alive at">{device.alive_at || "Never"}</:col>
 
   <:action :let={{_id, device}}>

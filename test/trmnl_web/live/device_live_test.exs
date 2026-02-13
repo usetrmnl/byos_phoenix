@@ -4,9 +4,33 @@ defmodule TrmnlWeb.DeviceLiveTest do
   import Phoenix.LiveViewTest
   import Trmnl.InventoryFixtures
 
-  @create_attrs %{name: "some name", api_key: "some api_key", mac_address: "some mac_address", friendly_id: "some friendly_id", refresh_interval: 42}
-  @update_attrs %{name: "some updated name", api_key: "some updated api_key", mac_address: "some updated mac_address", friendly_id: "some updated friendly_id", refresh_interval: 43}
-  @invalid_attrs %{name: nil, api_key: nil, mac_address: nil, friendly_id: nil, refresh_interval: nil}
+  @create_attrs %{
+    name: "some name",
+    api_key: "some api_key",
+    mac_address: "some mac_address",
+    friendly_id: "some friendly_id",
+    refresh_interval: 42,
+    pixel_height: 400,
+    pixel_width: 600
+  }
+  @update_attrs %{
+    name: "some updated name",
+    api_key: "some updated api_key",
+    mac_address: "some updated mac_address",
+    friendly_id: "some updated friendly_id",
+    refresh_interval: 43,
+    pixel_height: 444,
+    pixel_width: 555
+  }
+  @invalid_attrs %{
+    name: nil,
+    api_key: nil,
+    mac_address: nil,
+    friendly_id: nil,
+    refresh_interval: nil,
+    pixel_height: nil,
+    pixel_width: nil
+  }
 
   defp create_device(_) do
     device = device_fixture()
@@ -43,6 +67,8 @@ defmodule TrmnlWeb.DeviceLiveTest do
 
       html = render(index_live)
       assert html =~ "Device created successfully"
+      assert html =~ "400"
+      assert html =~ "600"
       assert html =~ "some name"
     end
 
@@ -66,6 +92,8 @@ defmodule TrmnlWeb.DeviceLiveTest do
 
       html = render(index_live)
       assert html =~ "Device updated successfully"
+      assert html =~ "444"
+      assert html =~ "555"
       assert html =~ "some updated name"
     end
 
@@ -108,6 +136,8 @@ defmodule TrmnlWeb.DeviceLiveTest do
       html = render(show_live)
       assert html =~ "Device updated successfully"
       assert html =~ "some updated name"
+      assert html =~ "444"
+      assert html =~ "555"
     end
   end
 end
