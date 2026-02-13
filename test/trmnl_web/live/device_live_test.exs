@@ -7,7 +7,7 @@ defmodule TrmnlWeb.DeviceLiveTest do
   @create_attrs %{
     name: "some name",
     api_key: "some api_key",
-    mac_address: "some mac_address",
+    mac_address: "AA:BB:CC:DD:EE:FF",
     friendly_id: "some friendly_id",
     refresh_interval: 42,
     pixel_height: 400,
@@ -16,7 +16,7 @@ defmodule TrmnlWeb.DeviceLiveTest do
   @update_attrs %{
     name: "some updated name",
     api_key: "some updated api_key",
-    mac_address: "some updated mac_address",
+    mac_address: "11:22:33:44:55:66",
     friendly_id: "some updated friendly_id",
     refresh_interval: 43,
     pixel_height: 444,
