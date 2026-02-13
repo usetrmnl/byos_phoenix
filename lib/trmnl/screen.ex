@@ -10,8 +10,6 @@ defmodule Trmnl.Screen do
   require Logger
   alias Trmnl.Inventory
 
-  @width 800
-  @height 480
   @color_depth 1
 
   @doc """
@@ -49,9 +47,9 @@ defmodule Trmnl.Screen do
     # --- Generate screenshot ---
     System.cmd("puppeteer-img", [
       "--width",
-      to_string(@width),
+      to_string(device.pixel_width),
       "--height",
-      to_string(@height),
+      to_string(device.pixel_height),
       "--path",
       screenshot_path,
       current_screen_url
@@ -61,7 +59,7 @@ defmodule Trmnl.Screen do
     System.cmd("magick", [
       screenshot_path,
       "-resize",
-      "#{@width}x#{@height}",
+      "#{device.pixel_width}x#{device.pixel_height}",
       "-dither",
       "FloydSteinberg",
       "-remap",
