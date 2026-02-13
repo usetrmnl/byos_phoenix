@@ -21,13 +21,13 @@ defmodule Trmnl.InventoryTest do
     end
 
     test "create_device/1 with valid data creates a device" do
-      valid_attrs = %{name: "some name", api_key: "some api_key", mac_address: "some mac_address", friendly_id: "some friendly_id", refresh_interval: 42}
+      valid_attrs = %{name: "some name", api_key: "some api_key", mac_address: "AA:BB:CC:DD:EE:FF", friendly_id: "some friendly_id", refresh_interval: 42}
 
       assert {:ok, %Device{} = device} = Inventory.create_device(valid_attrs)
       assert device.name == "some name"
       assert device.api_key == "some api_key"
-      assert device.mac_address == "some mac_address"
-      assert device.friendly_id == "some friendly_id"
+      assert device.mac_address == "AA:BB:CC:DD:EE:FF"
+      assert device.friendly_id == "SOME FRIENDLY_ID"
       assert device.refresh_interval == 42
     end
 
@@ -37,13 +37,13 @@ defmodule Trmnl.InventoryTest do
 
     test "update_device/2 with valid data updates the device" do
       device = device_fixture()
-      update_attrs = %{name: "some updated name", api_key: "some updated api_key", mac_address: "some updated mac_address", friendly_id: "some updated friendly_id", refresh_interval: 43}
+      update_attrs = %{name: "some updated name", api_key: "some updated api_key", mac_address: "FF:EE:DD:CC:BB:AA", friendly_id: "SOME UPDATED FRIENDLY_ID", refresh_interval: 43}
 
       assert {:ok, %Device{} = device} = Inventory.update_device(device, update_attrs)
       assert device.name == "some updated name"
       assert device.api_key == "some updated api_key"
-      assert device.mac_address == "some updated mac_address"
-      assert device.friendly_id == "some updated friendly_id"
+      assert device.mac_address == "FF:EE:DD:CC:BB:AA"
+      assert device.friendly_id == "SOME UPDATED FRIENDLY_ID"
       assert device.refresh_interval == 43
     end
 

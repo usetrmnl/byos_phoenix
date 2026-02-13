@@ -54,7 +54,9 @@ defmodule Trmnl.Inventory.Device do
 
   defp upcase(changeset, fields) do
     Enum.reduce(fields, changeset, fn field, changeset ->
-      update_change(changeset, field, &String.upcase/1)
+      update_change(changeset, field, fn value ->
+        if value, do: String.upcase(value), else: value
+      end)
     end)
   end
 end
