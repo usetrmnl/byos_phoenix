@@ -23,6 +23,8 @@ defmodule TrmnlWeb.DeviceLive.FormComponent do
         <.input field={@form[:mac_address]} type="text" label="MAC address" />
         <.input field={@form[:api_key]} type="text" label="API key" />
         <.input field={@form[:friendly_id]} type="text" label="Friendly ID" />
+        <.input field={@form[:pixel_height]} type="number" label="Device height (px)" />
+        <.input field={@form[:pixel_width]} type="number" label="Device width (px)" />
         <.input field={@form[:refresh_interval]} type="number" label="Refresh interval" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Device</.button>
