@@ -9,6 +9,8 @@ defmodule Trmnl.Inventory.Device do
     field :latest_screen, :string
     field :mac_address, :string
     field :name, :string, default: "My TRMNL"
+    field :pixel_width, :integer, default: 800
+    field :pixel_height, :integer, default: 480
     field :playlist_index, :integer, default: 0
     field :refresh_interval, :integer, default: 900
     field :screen_generated_at, :utc_datetime
@@ -26,6 +28,8 @@ defmodule Trmnl.Inventory.Device do
       :latest_screen,
       :mac_address,
       :name,
+      :pixel_width,
+      :pixel_height,
       :playlist_index,
       :refresh_interval,
       :screen_generated_at
