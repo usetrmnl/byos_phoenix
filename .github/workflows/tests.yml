@@ -22,7 +22,7 @@ jobs:
            run: npx puppeteer browsers install chrome
            
          - name: Setup Imagemagick
-           run: apt-get install imagemagick
+           run: sudo apt-get install imagemagick
 
          - name: Run setup
            run: mix setup
