@@ -29,6 +29,3 @@ jobs:
 
          - name: Run tests
            run: mix test --include start
-
-            
-              
