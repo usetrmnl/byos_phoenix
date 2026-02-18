@@ -11,7 +11,8 @@ defmodule TrmnlWeb.DeviceLiveTest do
     friendly_id: "some friendly_id",
     refresh_interval: 42,
     pixel_height: 400,
-    pixel_width: 600
+    pixel_width: 600,
+    rotation: 0
   }
   @update_attrs %{
     name: "some updated name",
@@ -20,7 +21,8 @@ defmodule TrmnlWeb.DeviceLiveTest do
     friendly_id: "some updated friendly_id",
     refresh_interval: 43,
     pixel_height: 444,
-    pixel_width: 555
+    pixel_width: 555,
+    rotation: 90
   }
   @invalid_attrs %{
     name: nil,
@@ -29,7 +31,8 @@ defmodule TrmnlWeb.DeviceLiveTest do
     friendly_id: nil,
     refresh_interval: nil,
     pixel_height: nil,
-    pixel_width: nil
+    pixel_width: nil,
+    rotation: nil
   }
 
   defp create_device(_) do
@@ -108,7 +111,11 @@ defmodule TrmnlWeb.DeviceLiveTest do
       {:ok, _show_live, html} = live(conn, ~p"/devices/#{device}")
 
       assert html =~ "Show Device"
+      assert html =~ device.friendly_id
       assert html =~ device.name
+      assert html =~ "#{device.pixel_height}"
+      assert html =~ "#{device.pixel_width}"
+      assert html =~ "#{device.rotation}"
     end
 
     test "updates device within modal", %{conn: conn, device: device} do
@@ -134,6 +141,7 @@ defmodule TrmnlWeb.DeviceLiveTest do
       assert html =~ "some updated name"
       assert html =~ "444"
       assert html =~ "555"
+      assert html =~ "90"
     end
   end
 end
