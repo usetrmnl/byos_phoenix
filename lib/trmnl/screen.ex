@@ -60,6 +60,8 @@ defmodule Trmnl.Screen do
       screenshot_path,
       "-resize",
       "#{device.pixel_width}x#{device.pixel_height}",
+      "-rotate",
+      "#{device.rotation}",
       "-dither",
       "FloydSteinberg",
       "-remap",
