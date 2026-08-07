@@ -4,9 +4,27 @@ defmodule TrmnlWeb.DeviceLiveTest do
   import Phoenix.LiveViewTest
   import Trmnl.InventoryFixtures
 
-  @create_attrs %{name: "some name", api_key: "some api_key", mac_address: "some mac_address", friendly_id: "some friendly_id", refresh_interval: 42}
-  @update_attrs %{name: "some updated name", api_key: "some updated api_key", mac_address: "some updated mac_address", friendly_id: "some updated friendly_id", refresh_interval: 43}
-  @invalid_attrs %{name: nil, api_key: nil, mac_address: nil, friendly_id: nil, refresh_interval: nil}
+  @create_attrs %{
+    name: "some name",
+    api_key: "some_api_key",
+    mac_address: "11:11:11:11:11:11",
+    friendly_id: "some friendly_id",
+    refresh_interval: 42
+  }
+  @update_attrs %{
+    name: "some updated name",
+    api_key: "some updated api_key",
+    mac_address: "11:11:11:11:11:11",
+    friendly_id: "some updated friendly_id",
+    refresh_interval: 43
+  }
+  @invalid_attrs %{
+    name: nil,
+    api_key: nil,
+    mac_address: ".",
+    friendly_id: ".",
+    refresh_interval: nil
+  }
 
   defp create_device(_) do
     device = device_fixture()
