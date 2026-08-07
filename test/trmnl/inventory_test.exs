@@ -55,7 +55,9 @@ defmodule Trmnl.InventoryTest do
 
     test "update_device/2 with invalid data returns error changeset" do
       device = device_fixture()
+
       assert {:error, %Ecto.Changeset{}} = Inventory.update_device(device, @invalid_attrs)
+
       assert device == Inventory.get_device!(device.id)
     end
 
