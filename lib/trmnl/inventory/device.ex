@@ -11,7 +11,7 @@ defmodule Trmnl.Inventory.Device do
     field :name, :string, default: "My TRMNL"
     field :pixel_width, :integer, default: 800
     field :pixel_height, :integer, default: 480
-    field :rotation, :integer, default: 90
+    field :rotation, :integer, default: 0
     field :playlist_index, :integer, default: 0
     field :refresh_interval, :integer, default: 900
     field :screen_generated_at, :utc_datetime
@@ -45,6 +45,7 @@ defmodule Trmnl.Inventory.Device do
       :playlist_index,
       :refresh_interval
     ])
+    |> validate_inclusion(:rotation, [0, 90, 180, 270, 360])
     |> validate_mac_address()
     |> unique_constraint(:friendly_id)
     |> unique_constraint(:mac_address)
