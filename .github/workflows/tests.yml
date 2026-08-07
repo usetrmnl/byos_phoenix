@@ -1,0 +1,31 @@
+name: Elixir Tests
+on: [push]
+jobs: 
+   mix-test:
+      runs-on: ubuntu-22.04
+      steps:
+         - name: Checkout repository
+           uses: actions/checkout@v6
+
+         - name: Setup Elixir
+           uses: erlef/setup-beam@v1
+           with:
+              elixir-version: 1.18.3
+              otp-version: OTP-26.0
+         - name: Setup node
+           uses: actions/setup-node@v6
+           
+         - name: Install puppeteer-img
+           run: npm install -g @algora/puppeteer-img
+        
+         - name: Setup Chrome
+           run: npx puppeteer browsers install chrome
+           
+         - name: Setup Imagemagick
+           run: sudo apt-get install imagemagick
+
+         - name: Run setup
+           run: mix setup
+
+         - name: Run tests
+           run: mix test --include start
