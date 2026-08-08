@@ -45,7 +45,7 @@ defmodule Trmnl.Inventory.Device do
       :playlist_index,
       :refresh_interval
     ])
-    |> validate_inclusion(:rotation, [0, 90, 180, 270, 360])
+    |> validate_inclusion(:rotation, [0, 90, 180, 270])
     |> validate_mac_address()
     |> unique_constraint(:friendly_id)
     |> unique_constraint(:mac_address)
