@@ -9,6 +9,9 @@ defmodule Trmnl.Inventory.Device do
     field :latest_screen, :string
     field :mac_address, :string
     field :name, :string, default: "My TRMNL"
+    field :pixel_width, :integer, default: 800
+    field :pixel_height, :integer, default: 480
+    field :rotation, :integer, default: 0
     field :playlist_index, :integer, default: 0
     field :refresh_interval, :integer, default: 900
     field :screen_generated_at, :utc_datetime
@@ -26,6 +29,9 @@ defmodule Trmnl.Inventory.Device do
       :latest_screen,
       :mac_address,
       :name,
+      :pixel_width,
+      :pixel_height,
+      :rotation,
       :playlist_index,
       :refresh_interval,
       :screen_generated_at
@@ -39,6 +45,7 @@ defmodule Trmnl.Inventory.Device do
       :playlist_index,
       :refresh_interval
     ])
+    |> validate_inclusion(:rotation, [0, 90, 180, 270])
     |> validate_mac_address()
     |> unique_constraint(:friendly_id)
     |> unique_constraint(:mac_address)
@@ -50,7 +57,9 @@ defmodule Trmnl.Inventory.Device do
 
   defp upcase(changeset, fields) do
     Enum.reduce(fields, changeset, fn field, changeset ->
-      update_change(changeset, field, &String.upcase/1)
+      update_change(changeset, field, fn value ->
+        if value, do: String.upcase(value), else: value
+      end)
     end)
   end
 end

@@ -3,7 +3,7 @@
   <head>
     <link rel="stylesheet" href={~p"/assets/app.css"} />
   </head>
-  <body class="w-[800px] h-[480px]">
+  <body style={"width: #{@device.pixel_width}px; height: #{@device.pixel_height}px"}>
     {@inner_content}
   </body>
 </html>

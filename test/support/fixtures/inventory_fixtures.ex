@@ -14,7 +14,10 @@ defmodule Trmnl.InventoryFixtures do
   """
   def unique_device_mac_address,
     do:
-      Enum.take(0..6, 6) |> Enum.map(fn _x -> Base.encode16(:rand.bytes(1)) end) |> Enum.join(":")
+      Enum.map(1..6, fn _ ->
+        :rand.uniform(255) |> Integer.to_string(16) |> String.pad_leading(2, "0")
+      end)
+      |> Enum.join(":")
 
   @doc """
   Generate a device.

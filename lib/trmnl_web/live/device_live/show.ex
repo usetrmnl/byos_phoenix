@@ -19,6 +19,11 @@ defmodule TrmnlWeb.DeviceLive.Show do
   end
 
   @impl true
+  def handle_info({TrmnlWeb.DeviceLive.FormComponent, {:saved, device}}, socket) do
+    {:noreply, assign(socket, :device, device)}
+  end
+
+  @impl true
   def handle_event("regenerate", _, socket) do
     {:ok, device} = Screen.regenerate(socket.assigns.device)
     {:noreply, assign(socket, device: device, screen_at: DateTime.to_unix(DateTime.utc_now()))}
