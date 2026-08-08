@@ -29,5 +29,13 @@ jobs:
          - name: Run setup
            run: mix setup
 
+         - name: Start Phoenix server
+           run: |
+            mix phx.server &
+            sleep 5
+            curl http://localhost:4002  # Verify server is running
+
          - name: Run tests
            run: mix test --include start
+           env:
+             MIX_ENV: test
