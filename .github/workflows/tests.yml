@@ -29,11 +29,6 @@ jobs:
          - name: Run setup
            run: mix setup
 
-         - name: Start Phoenix server
-           run: |
-            mix phx.server &
-            sleep 5
-
          - name: Run tests
            run: mix test --include start
            env:
