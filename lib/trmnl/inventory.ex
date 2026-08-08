@@ -67,7 +67,7 @@ defmodule Trmnl.Inventory do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_device(attrs \\ default_attrs()) do
+  def create_device(attrs \\ %{}) do
     %Device{}
     |> Device.changeset(attrs)
     |> Repo.insert()
@@ -75,7 +75,6 @@ defmodule Trmnl.Inventory do
       {:ok, device} ->
         Trmnl.ScreenGenerator.regenerate_asap(device)
         {:ok, device}
-
       {:error, changeset} ->
         {:error, changeset}
     end
@@ -124,7 +123,15 @@ defmodule Trmnl.Inventory do
       %Ecto.Changeset{data: %Device{}}
 
   """
-  def change_device(%Device{} = device, attrs \\ default_attrs()) do
+  def change_device(%Device{} = device, attrs) do
+    attrs = if is_nil(device.id) do
+      attrs
+      |> Map.put_new("api_key", random_api_key())
+      |> Map.put_new("friendly_id", random_friendly_id())
+    else
+      attrs
+    end
+
     Device.changeset(device, attrs)
   end
 
@@ -135,10 +142,6 @@ defmodule Trmnl.Inventory do
     device
     |> Device.changeset(%{alive_at: DateTime.utc_now()})
     |> Repo.update()
-  end
-
-  defp default_attrs do
-    %{api_key: random_api_key(), friendly_id: random_friendly_id()}
   end
 
   defp random_api_key do
