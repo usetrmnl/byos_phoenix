@@ -1,6 +1,8 @@
 name: Elixir Tests
-on: [push]
-jobs: 
+on:
+  push:
+  pull_request:
+jobs:
    mix-test:
       runs-on: ubuntu-22.04
       steps:
@@ -14,13 +16,13 @@ jobs:
               otp-version: OTP-26.0
          - name: Setup node
            uses: actions/setup-node@v6
-           
+
          - name: Install puppeteer-img
            run: npm install -g @algora/puppeteer-img
-        
+
          - name: Setup Chrome
            run: npx puppeteer browsers install chrome
-           
+
          - name: Setup Imagemagick
            run: sudo apt-get install imagemagick
 
