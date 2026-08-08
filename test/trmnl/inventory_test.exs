@@ -8,7 +8,14 @@ defmodule Trmnl.InventoryTest do
 
     import Trmnl.InventoryFixtures
 
-    @invalid_attrs %{name: nil, api_key: nil, mac_address: nil, friendly_id: nil, refresh_interval: nil, rotation: nil}
+    @invalid_attrs %{
+      name: nil,
+      api_key: nil,
+      mac_address: nil,
+      friendly_id: nil,
+      refresh_interval: nil,
+      rotation: nil
+    }
 
     test "list_devices/0 returns all devices" do
       device = device_fixture()
@@ -21,7 +28,14 @@ defmodule Trmnl.InventoryTest do
     end
 
     test "create_device/1 with valid data creates a device" do
-      valid_attrs = %{name: "some name", api_key: "some api_key", mac_address: "AA:BB:CC:DD:EE:FF", friendly_id: "some friendly_id", refresh_interval: 42, rotation: 0}
+      valid_attrs = %{
+        name: "some name",
+        api_key: "some api_key",
+        mac_address: "AA:BB:CC:DD:EE:FF",
+        friendly_id: "some friendly_id",
+        refresh_interval: 42,
+        rotation: 0
+      }
 
       assert {:ok, %Device{} = device} = Inventory.create_device(valid_attrs)
       assert device.name == "some name"
@@ -40,7 +54,17 @@ defmodule Trmnl.InventoryTest do
 
     test "update_device/2 with valid data updates the device" do
       device = device_fixture()
-      update_attrs = %{name: "some updated name", api_key: "some updated api_key", mac_address: "FF:EE:DD:CC:BB:AA", friendly_id: "SOME UPDATED FRIENDLY_ID", refresh_interval: 43, pixel_height: 1080, pixel_width: 1920, rotation: 90}
+
+      update_attrs = %{
+        name: "some updated name",
+        api_key: "some updated api_key",
+        mac_address: "FF:EE:DD:CC:BB:AA",
+        friendly_id: "SOME UPDATED FRIENDLY_ID",
+        refresh_interval: 43,
+        pixel_height: 1080,
+        pixel_width: 1920,
+        rotation: 90
+      }
 
       assert {:ok, %Device{} = device} = Inventory.update_device(device, update_attrs)
       assert device.name == "some updated name"
