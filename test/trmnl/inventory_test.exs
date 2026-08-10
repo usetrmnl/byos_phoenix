@@ -30,7 +30,7 @@ defmodule Trmnl.InventoryTest do
     test "create_device/1 with valid data creates a device" do
       valid_attrs = %{
         name: "some name",
-        api_key: "some api_key",
+        api_key: "test_api_key",
         mac_address: "AA:BB:CC:DD:EE:FF",
         friendly_id: "some friendly_id",
         refresh_interval: 42,
@@ -39,7 +39,7 @@ defmodule Trmnl.InventoryTest do
 
       assert {:ok, %Device{} = device} = Inventory.create_device(valid_attrs)
       assert device.name == "some name"
-      assert device.api_key == "some api_key"
+      assert device.api_key == "test_api_key"
       assert device.mac_address == "AA:BB:CC:DD:EE:FF"
       assert device.friendly_id == "SOME FRIENDLY_ID"
       assert device.refresh_interval == 42

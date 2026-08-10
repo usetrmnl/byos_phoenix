@@ -6,7 +6,7 @@ defmodule TrmnlWeb.DeviceLiveTest do
 
   @create_attrs %{
     name: "some name",
-    api_key: "some api_key",
+    api_key: "test_api_key",
     mac_address: "AA:BB:CC:DD:EE:FF",
     friendly_id: "some friendly_id",
     refresh_interval: 42,

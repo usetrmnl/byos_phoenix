@@ -26,7 +26,7 @@ defmodule Trmnl.InventoryFixtures do
     {:ok, device} =
       attrs
       |> Enum.into(%{
-        api_key: "some api_key",
+        api_key: "test_api_key",
         friendly_id: unique_device_friendly_id(),
         mac_address: unique_device_mac_address(),
         name: "some name",

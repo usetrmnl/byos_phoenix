@@ -15,7 +15,7 @@ config :trmnl, Trmnl.Repo,
 config :trmnl, TrmnlWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "CfoEoRVbOD9o671wn4Cv0nrhFNo+LSd1p+8KessZLLsGzWhtACJ0PxmUQJwGAeh6",
-  server: false
+  server: true
 
 # Print only warnings and errors during test
 config :logger, level: :warning
