@@ -3,6 +3,33 @@ on:
   push:
   pull_request:
 jobs:
+   mix-format:
+      runs-on: ubuntu-22.04
+      steps:
+         - name: Checkout repository
+           uses: actions/checkout@v7
+
+         - name: Setup Elixir
+           uses: erlef/setup-beam@v1
+           with:
+              elixir-version: 1.18.3
+              otp-version: OTP-26.0
+
+         - name: Cache deps
+           uses: actions/cache@v4
+           with:
+              path: |
+                 deps
+                 _build
+              key: ${{ runner.os }}-mix-format-${{ hashFiles('mix.lock') }}
+              restore-keys: ${{ runner.os }}-mix-format-
+
+         - name: Install dependencies
+           run: mix deps.get
+
+         - name: Check formatting
+           run: mix format --check-formatted
+
    mix-test:
       runs-on: ubuntu-22.04
       steps:
