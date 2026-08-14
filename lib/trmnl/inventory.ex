@@ -75,6 +75,7 @@ defmodule Trmnl.Inventory do
       {:ok, device} ->
         Trmnl.ScreenGenerator.regenerate_asap(device)
         {:ok, device}
+
       {:error, changeset} ->
         {:error, changeset}
     end
@@ -124,13 +125,14 @@ defmodule Trmnl.Inventory do
 
   """
   def change_device(%Device{} = device, attrs) do
-    attrs = if is_nil(device.id) do
-      attrs
-      |> Map.put_new("api_key", random_api_key())
-      |> Map.put_new("friendly_id", random_friendly_id())
-    else
-      attrs
-    end
+    attrs =
+      if is_nil(device.id) do
+        attrs
+        |> Map.put_new("api_key", random_api_key())
+        |> Map.put_new("friendly_id", random_friendly_id())
+      else
+        attrs
+      end
 
     Device.changeset(device, attrs)
   end
