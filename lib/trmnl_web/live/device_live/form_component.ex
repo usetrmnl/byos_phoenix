@@ -41,7 +41,7 @@ defmodule TrmnlWeb.DeviceLive.FormComponent do
      socket
      |> assign(assigns)
      |> assign_new(:form, fn ->
-       to_form(Inventory.change_device(device))
+       to_form(Inventory.change_device(device, %{}))
      end)}
   end
 

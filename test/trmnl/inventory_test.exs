@@ -93,7 +93,7 @@ defmodule Trmnl.InventoryTest do
 
     test "change_device/1 returns a device changeset" do
       device = device_fixture()
-      assert %Ecto.Changeset{} = Inventory.change_device(device)
+      assert %Ecto.Changeset{} = Inventory.change_device(device, %{})
     end
   end
 end
